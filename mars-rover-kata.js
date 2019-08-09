@@ -9,7 +9,7 @@ let gridHeight = 10
 
 // line across
 function consoleHr(x) {
-	const a = "_".repeat(79)
+	const a = "_".repeat(gridWidth*7.9)
 	if ( x > 1 ) {
 		for (i=0;i <= x;i++) {
 			console.log(a)
@@ -46,9 +46,9 @@ function gridSize(width, height) {
 
 let grid = [];
 
-for (let i = 0; i < gridWidth; i++) {
+for (let i = 0; i < gridHeight; i++) {
 	grid[i] = []
-	for (let j = 0; j < gridHeight; j++) {
+	for (let j = 0; j < gridWidth; j++) {
 		grid[i][j] = "[       ]"
 	}
 }
@@ -60,9 +60,21 @@ for (let i = 0; i < gridWidth; i++) {
 let roverWalle = {
 	name: "Rover WALL-E",
 	direction: "E",
-	x: 9,
-	y: 9,
+	x: 4,
+	y: 4,
 	travelLog: []
+}
+
+function clapTraps(percentage) {
+	
+}
+
+
+// Obtacle Generator
+// ===============================================================
+
+function obstables(percentage) {
+
 }
 
 
@@ -145,7 +157,6 @@ function turnRight(rover){
 
 function moveRover(direction, rover, roverX=0, roverY=0) {
 
-
 		if (rover.x + roverX < 0 || rover.x + roverX >= gridWidth || rover.y + roverY < 0 || rover.y + roverY >= gridHeight) {
 			console.log (rover.name + " is at the edge! Unable to move foward")
 			consoleHr()
@@ -172,7 +183,7 @@ function moveRover(direction, rover, roverX=0, roverY=0) {
 				grid[rover.y][rover.x] = "[   <  ]"
 				break;
 			}
-			rover.travelLog.push(`M${rover.direction} ${rover.x}, ${rover.y}`)
+			rover.travelLog.push(`${rover.x}, ${rover.y}`)
 			printGrid()
 		}
 }
@@ -194,25 +205,20 @@ function moveForward(rover) {
 }
 
 function moveBackwards(rover) {
-  console.log(rover.name + " was commanded to move backwards")
-
-/*
-	// get the second to last position
-	y = rover.travelLog.length-1
-	console.log(`${rover.travelLog[y]}`)
+  console.log(rover.name + " was commanded to move backward")
 
 	if (rover.direction === "N") {
-		moveRover("up", rover, 0, -1)
+		moveRover("up", rover, 0, 1)
 	} else if (rover.direction === "W") {
-		moveRover("left", rover, -1, 0)
+		moveRover("left", rover, 1, 0)
 	} else if (rover.direction === "S") {
-		moveRover("down", rover, 0, 1)
+		moveRover("down", rover, 0, -1)
 	} else if (rover.direction === "E") {
-		moveRover("right", rover, 1, 0)
+		moveRover("right", rover, -1, 0)
 	}
 
 	console.log("[DEBUG --- " + rover.name + "] positions: x ="+ roverWalle.x + ",  " + "y =" + roverWalle.y + ",  direction = " + roverWalle.direction )
-*/
+
 }
 
 
@@ -247,7 +253,7 @@ function placeRover(rover) {
 			break;
 	}
 }
-placeRover(roverWalle)
+
 
 
 
@@ -288,20 +294,31 @@ function listTravellog(rover) {
 // Print the intial grid to show what the grid starts with
 // ===============================================================
 
-console.log("                                             Starting Initial Grid                                             ")
+/*
+console.log("- - -   Starting Initial Grid")
 consoleHr()
 printGrid();
+*/
 
 // User commands below
 // ===============================================================
-console.log("                               Begin Movement Commands Below                               ")
+console.log("- - -   Begin Movement Commands Below")
 consoleHr()
 
-command(roverWalle, "fb")
+// place our main rover
+placeRover(roverWalle)
+
+// generate obstacles
+
+// generate additional rovers
+
+
+command(roverWalle, "frfb")
 //command(roverWalle, "fbrrrrllflf")
 //command(roverWalle, "rffbrffblfrfbf")
 
-console.log("                                                    Travel Log                                                    ")
+consoleSpace(2)
+consoleHr()
+console.log("- - -   Travel Log")
 consoleHr()
 listTravellog(roverWalle);
-console.log(" ")
