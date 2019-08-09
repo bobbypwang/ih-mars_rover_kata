@@ -33,18 +33,8 @@ function consoleSpace(x) {
 
 
 // Grid Creation
-// ===============================================================
-
-// Create gridSize function to accept custom grid sizes
-// defaults to 10 as set in global variables
-function gridSize(width, height) {
-	gridWidth = width
-	gridHeight = height
-}
-
 // Create the grid based on the grid size specified in gridSize
 // ===============================================================
-
 let grid = [];
 
 for (let i = 0; i < gridHeight; i++) {
@@ -64,6 +54,14 @@ function positionGenerator() {
 	// add non empty array values to a arrayNew
 	// generate x and y numbers that isn't [x][y] of arrayNew
 	// need an error checker somehow if no positions available
+
+	let availableSpaces = []
+	// availableSpaces is the number of values in grid that has an empty space
+	let takenSpaces = []
+
+	for (let i = 0 ; i < grid.length ; i++ ) {
+
+	}
 }
 
 
@@ -126,7 +124,7 @@ function faceEast(rover) {
 // ===============================================================
 
 function turnLeft(rover){
-  console.log(rover.name + " was commanded to turn left");
+  console.log(rover.name + " was commanded to turn left.");
 
 		switch (rover.direction) {
 		case "N":
@@ -146,7 +144,7 @@ function turnLeft(rover){
 }
 
 function turnRight(rover){
-  console.log(rover.name + " was commanded to turn right");
+  console.log(rover.name + " was commanded to turn right.");
 
 		switch (rover.direction) {
 		case "N":
@@ -173,7 +171,7 @@ function turnRight(rover){
 function moveRover(direction, rover, roverX=0, roverY=0) {
 
 		if (rover.x + roverX < 0 || rover.x + roverX >= gridWidth || rover.y + roverY < 0 || rover.y + roverY >= gridHeight) {
-			console.log (rover.name + " is at the edge! Unable to move foward")
+			console.log (rover.name + " is at the edge! Unable to proceed with movement command.")
 			consoleHr()
 		} else {
 			grid[rover.y][rover.x] = "[       ]"
@@ -200,7 +198,7 @@ function moveRover(direction, rover, roverX=0, roverY=0) {
 }
 
 function moveForward(rover) {
-  console.log(rover.name + " was commanded to move forward")
+  console.log(rover.name + " was commanded to move forward.")
 
 	if (rover.direction === "N") {
 		moveRover("up", rover, 0, -1)
@@ -216,7 +214,7 @@ function moveForward(rover) {
 }
 
 function moveBackwards(rover) {
-  console.log(rover.name + " was commanded to move backward")
+  console.log(rover.name + " was commanded to move backward.")
 
 	if (rover.direction === "N") {
 		moveRover("up", rover, 0, 1)
@@ -228,7 +226,7 @@ function moveBackwards(rover) {
 		moveRover("right", rover, -1, 0)
 	}
 
-	console.log("[DEBUG --- " + rover.name + "] positions: x ="+ roverWalle.x + ",  " + "y =" + roverWalle.y + ",  direction = " + roverWalle.direction )
+	// console.log("[DEBUG --- " + rover.name + "] positions: x ="+ roverWalle.x + ",  " + "y =" + roverWalle.y + ",  direction = " + roverWalle.direction )
 
 }
 
@@ -245,8 +243,9 @@ function printGrid() {
 }
 
 
-
 // Function to place the rovers on the grid initially
+// ===============================================================
+
 function placeRover(rover) {
 	switch (rover.direction) {
 		case "N" :
@@ -275,16 +274,16 @@ function command(rover, orders) {
 		for (let i = 0; i < orders.length; i++) {
 			let order = orders[i];
 			switch (order) {
-				case "l": // move left
+				case "l":
 					turnLeft(rover)
 					break;
-				case "r": // move right
+				case "r":
 					turnRight(rover)
 					break;
-				case "f": // move foward
+				case "f":
 					moveForward(rover)
 					break;
-				case "b": // move backwards
+				case "b":
 					moveBackwards(rover)
 					break;
 			}
@@ -315,6 +314,7 @@ printGrid();
 console.log("- - -   Begin Movement Commands Below")
 consoleHr()
 
+
 // place our main rover
 placeRover(roverWalle)
 
@@ -323,13 +323,12 @@ placeRover(roverWalle)
 // generate additional rovers
 
 
-command(roverWalle, "ffrffb")
+command(roverWalle, "frfrflfb")
 //command(roverWalle, "fbrrrrllflf")
 //command(roverWalle, "rffbrffblfrfbf")
 
-consoleSpace(2)
-consoleHr()
-console.log("- - -   Travel Log")
+consoleSpace(1)
+console.log(`- - -   ${roverWalle.name} Travel Log`)
 consoleHr()
 listTravellog(roverWalle);
 
