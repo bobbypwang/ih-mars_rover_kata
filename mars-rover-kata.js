@@ -31,6 +31,7 @@ function consoleSpace(x) {
 	}
 }
 
+
 // Grid Creation
 // ===============================================================
 
@@ -53,6 +54,28 @@ for (let i = 0; i < gridHeight; i++) {
 	}
 }
 
+
+// Position Generator 
+// Used by obsticles() and clapTraps()
+// ===============================================================
+
+function positionGenerator() {
+	// check to see which array values is not empty
+	// add non empty array values to a arrayNew
+	// generate x and y numbers that isn't [x][y] of arrayNew
+	// need an error checker somehow if no positions available
+}
+
+
+
+// Obtacle Generator
+// ===============================================================
+
+function obstables(percentage) {
+
+}
+
+
 // Rovers 
 // Create rovers here
 // ===============================================================
@@ -66,16 +89,10 @@ let roverWalle = {
 }
 
 function clapTraps(percentage) {
-	
-}
-
-
-// Obtacle Generator
-// ===============================================================
-
-function obstables(percentage) {
 
 }
+
+
 
 
 
@@ -125,7 +142,6 @@ function turnLeft(rover){
 			faceNorth(rover)
 			break;
 	}
-	console.log(rover.name + " has turned left");
 	printGrid()
 }
 
@@ -146,7 +162,6 @@ function turnRight(rover){
 			faceSouth(rover)
 			break;
 	}
-	console.log(rover.name + " has turned right");
 	printGrid()
 }
 
@@ -167,19 +182,15 @@ function moveRover(direction, rover, roverX=0, roverY=0) {
 
 			switch (direction) {
 			case "up" :
-				console.log(rover.name + " has moved up")
 				grid[rover.y][rover.x] = "[   ^  ]"
 				break;
 			case "right" :
-				console.log(rover.name + " has moved right")
 				grid[rover.y][rover.x] = "[   >  ]"
 				break;
 			case "down" :
-				console.log(rover.name + " has moved down")
 				grid[rover.y][rover.x] = "[   v  ]"
 				break;
 			case "left" :
-				console.log(rover.name + " has moved left")
 				grid[rover.y][rover.x] = "[   <  ]"
 				break;
 			}
@@ -231,7 +242,6 @@ function printGrid() {
 		console.log(grid[i].join("   "))
 	}
 	consoleHr()
-	consoleSpace()
 }
 
 
@@ -313,7 +323,7 @@ placeRover(roverWalle)
 // generate additional rovers
 
 
-command(roverWalle, "frfb")
+command(roverWalle, "ffrffb")
 //command(roverWalle, "fbrrrrllflf")
 //command(roverWalle, "rffbrffblfrfbf")
 
@@ -322,3 +332,7 @@ consoleHr()
 console.log("- - -   Travel Log")
 consoleHr()
 listTravellog(roverWalle);
+
+// playcode.io gets funky without the bottom
+consoleHr()
+console.log(" ")
