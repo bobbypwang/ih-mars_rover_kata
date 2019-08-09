@@ -1,7 +1,7 @@
 // Global Variables
 // ===============================================================
 let gridWidth = 10
-let gridHeight = 10
+let gridHeight = 11
 
 
 // Console Layouts
@@ -45,50 +45,66 @@ for (let i = 0; i < gridHeight; i++) {
 }
 
 
-// Position Generator 
-// Used by obsticles() and clapTraps()
+
+// Obsticle Generator
 // ===============================================================
 
-function positionGenerator() {
-	// check to see which array values is not empty
-	// add non empty array values to a arrayNew
-	// generate x and y numbers that isn't [x][y] of arrayNew
-	// need an error checker somehow if no positions available
+let obsticles = []
 
-	let availableSpaces = []
-	// availableSpaces is the number of values in grid that has an empty space
-	let takenSpaces = []
+function genObsticles(percentage) {
 
-	for (let i = 0 ; i < grid.length ; i++ ) {
+	let maxPossibleThings = gridWidth * gridHeight
+	let obsticlesGenerated = maxPossibleThings * (percentage / 100)
 
+	function randomNum(axis) {
+		switch (axis) {
+		case "x" :
+			return Math.floor(Math.random() * Math.floor(gridWidth));
+		break;
+		case "y" :
+			return Math.floor(Math.random() * Math.floor(gridHeight));
+		}
+	}
+
+	for (let i = 0 ; i <= obsticlesGenerated ; i++ ) {
+		let xy = randomNum("x") + "" + randomNum("y")
+
+		if (obsticles.indexOf("xy")) {
+			obsticles.push(xy)
+			// obsticles[ "obs" + [i]] = {x: randomNum(x), y: randomNum(y)}
+		}
+	}
+
+	for (let i = 1; i <= obsticles.length ; i++) {
+		
 	}
 }
 
-
-
-// Obtacle Generator
-// ===============================================================
-
-function obstables(percentage) {
-
-}
 
 
 // Rovers 
 // Create rovers here
 // ===============================================================
 
-let roverWalle = {
-	name: "Rover WALL-E",
-	direction: "E",
-	x: 4,
-	y: 4,
-	travelLog: []
+let rovers = {
+	Walle : {
+		name: "Rover WALL-E",
+		direction: "N",
+		x: 4,
+		y: 4,
+		travelLog: {
+			x : [],
+			y : []
+		}
+	}
 }
+obsticles.push(rovers.Walle.x + "" + rovers.Walle.y)
 
-function clapTraps(percentage) {
+genObsticles(10)
+console.log(obsticles)
+consoleSpace(3)
 
-}
+
 
 
 
@@ -170,8 +186,11 @@ function turnRight(rover){
 
 function moveRover(direction, rover, roverX=0, roverY=0) {
 
-		if (rover.x + roverX < 0 || rover.x + roverX >= gridWidth || rover.y + roverY < 0 || rover.y + roverY >= gridHeight) {
-			console.log (rover.name + " is at the edge! Unable to proceed with movement command.")
+	let xx = rover.x + roverX
+	let yy = rover.y + roverY
+
+		if (xx < 0 || xx >= gridWidth || yy < 0 || yy >= gridHeight) {
+			console.log (rover.name + " will fall off! Unable to proceed with movement command.")
 			consoleHr()
 		} else {
 			grid[rover.y][rover.x] = "[       ]"
@@ -192,7 +211,8 @@ function moveRover(direction, rover, roverX=0, roverY=0) {
 				grid[rover.y][rover.x] = "[   <  ]"
 				break;
 			}
-			rover.travelLog.push(`${rover.x}, ${rover.y}`)
+			rover.travelLog.x.push(rover.x)
+			rover.travelLog.y.push(rover.y)
 			printGrid()
 		}
 }
@@ -210,7 +230,7 @@ function moveForward(rover) {
 		moveRover("right", rover, 1, 0)
 	}
 
-	// console.log("[DEBUG --- " + rover.name + "] positions: x ="+ roverWalle.x + ",  " + "y =" + roverWalle.y + ",  direction = " + roverWalle.direction )
+	// console.log("[DEBUG --- " + rover.name + "] positions: x ="+ rovers.Walle.x + ",  " + "y =" + rovers.Walle.y + ",  direction = " + rovers.Walle.direction )
 }
 
 function moveBackwards(rover) {
@@ -226,7 +246,7 @@ function moveBackwards(rover) {
 		moveRover("right", rover, -1, 0)
 	}
 
-	// console.log("[DEBUG --- " + rover.name + "] positions: x ="+ roverWalle.x + ",  " + "y =" + roverWalle.y + ",  direction = " + roverWalle.direction )
+	// console.log("[DEBUG --- " + rover.name + "] positions: x ="+ rovers.Walle.x + ",  " + "y =" + rovers.Walle.y + ",  direction = " + rovers.Walle.direction )
 
 }
 
@@ -295,8 +315,8 @@ function command(rover, orders) {
 // Print the rover travel log
 // ===============================================================
 function listTravellog(rover) {
-	for (let i=0; i < rover.travelLog.length; i++) {
-		console.log(rover.travelLog[i])
+	for (let i=0; i < rover.travelLog.x.length; i++) {
+		console.log(`${rover.travelLog.x[i]},${rover.travelLog.y[i]}`)
 	}
 }
 
@@ -316,22 +336,24 @@ consoleHr()
 
 
 // place our main rover
-placeRover(roverWalle)
+placeRover(rovers.Walle)
 
 // generate obstacles
 
 // generate additional rovers
 
 
-command(roverWalle, "frfrflfb")
-//command(roverWalle, "fbrrrrllflf")
-//command(roverWalle, "rffbrffblfrfbf")
+command(rovers.Walle, "frrflb")
+//command(rovers.Walle, "fbrrrrllflf")
+//command(rovers.Walle, "rffbrffblfrfbf")
 
 consoleSpace(1)
-console.log(`- - -   ${roverWalle.name} Travel Log`)
+console.log(`- - -   ${rovers.Walle.name} Travel Log`)
 consoleHr()
-listTravellog(roverWalle);
+listTravellog(rovers.Walle);
+console.log(rovers.Walle.travelLog.x)
+console.log(rovers.Walle.travelLog.y)
 
-// playcode.io gets funky without the bottom
-consoleHr()
+// playcode.io's console gets cut off at the bottom, padding makes it visible
+consoleSpace(5)
 console.log(" ")
