@@ -1,7 +1,7 @@
 // Global Variables
 // ===============================================================
 let gridWidth = 10
-let gridHeight = 11
+let gridHeight = 10
 let emptyGridSpace = "[       ]"
 
 // Optimized for playcode.io
@@ -182,13 +182,14 @@ function moveRover(direction, rover, roverX=0, roverY=0) {
 	let yy = rover.y + roverY
 
 		if (xx < 0 || xx >= gridWidth || yy < 0 || yy >= gridHeight) {
-			console.log (rover.name + " will fall off! Unable to proceed with movement command.")
+			console.log (rover.name + " will fall off the grid. Movement command not processed.")
 			consoleHr()
+		} else if (grid[yy][xx] !== emptyGridSpace) {
+			console.log (`${rover.name}'s path not clear. Movement command not processed.`)
 		} else {
 			grid[rover.y][rover.x] = emptyGridSpace
 			rover.x += roverX
 			rover.y += roverY
-
 			switch (direction) {
 			case "up" :
 				grid[rover.y][rover.x] = "[   ^  ]"
@@ -330,6 +331,7 @@ printGrid();
 
 // User movemwnr commands below
 // ===============================================================
+consoleSpace()
 console.log("- - -   Begin Movement Commands Below")
 consoleHr()
 
