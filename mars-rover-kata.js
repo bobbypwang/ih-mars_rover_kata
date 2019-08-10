@@ -2,6 +2,7 @@
 // ===============================================================
 let gridWidth = 10
 let gridHeight = 11
+let emptyGridSpace = "[       ]"
 
 
 // Console Layouts
@@ -40,47 +41,45 @@ let grid = [];
 for (let i = 0; i < gridHeight; i++) {
 	grid[i] = []
 	for (let j = 0; j < gridWidth; j++) {
-		grid[i][j] = "[       ]"
+		grid[i][j] = emptyGridSpace
 	}
 }
 
 
-
-// Obsticle Generator
+// Obstacle and Rover Generator
 // ===============================================================
+let obstacles = {}
 
-let obsticles = []
-
-function genObsticles(percentage) {
-
-	let maxPossibleThings = gridWidth * gridHeight
-	let obsticlesGenerated = maxPossibleThings * (percentage / 100)
-
-	function randomNum(axis) {
-		switch (axis) {
-		case "x" :
-			return Math.floor(Math.random() * Math.floor(gridWidth));
-		break;
-		case "y" :
-			return Math.floor(Math.random() * Math.floor(gridHeight));
-		}
-	}
-
-	for (let i = 0 ; i <= obsticlesGenerated ; i++ ) {
-		let xy = randomNum("x") + "" + randomNum("y")
-
-		if (obsticles.indexOf("xy")) {
-			obsticles.push(xy)
-			// obsticles[ "obs" + [i]] = {x: randomNum(x), y: randomNum(y)}
-		}
-	}
-
-	for (let i = 1; i <= obsticles.length ; i++) {
-		
+function randomNum(axis) {
+	switch (axis) {
+	case "x" :
+		return Math.floor(Math.random() * Math.floor(gridWidth));
+	break;
+	case "y" :
+		return Math.floor(Math.random() * Math.floor(gridHeight));
 	}
 }
 
-
+function generate(item, percentage) {
+	let i = 0
+	while (i <= (gridWidth * gridHeight) * (percentage / 100)) {
+		let x = randomNum("x")
+		let y = randomNum("y")
+		if (grid[x][y] === emptyGridSpace) {
+			switch (item) {
+				case "obstacle" :
+					obstacles[ "obs" + [i]] = {"x": x, "y": y}
+					grid[x][y] = "[llllllll]"
+				break;
+				case "rovers" : 
+					rovers[ "rover" + [i]] = {"x": x, "y": y}
+					grid[x][y] = "[ -R- ]"
+				break;
+			}
+			i++
+		}
+	}
+}
 
 // Rovers 
 // Create rovers here
@@ -98,11 +97,12 @@ let rovers = {
 		}
 	}
 }
-obsticles.push(rovers.Walle.x + "" + rovers.Walle.y)
 
-genObsticles(10)
-console.log(obsticles)
-consoleSpace(3)
+generate("obstacle", 10)
+generate("rovers", 10)
+// console.log(obstacles)
+// console.log(rovers)
+// consoleSpace(3)
 
 
 
@@ -193,7 +193,7 @@ function moveRover(direction, rover, roverX=0, roverY=0) {
 			console.log (rover.name + " will fall off! Unable to proceed with movement command.")
 			consoleHr()
 		} else {
-			grid[rover.y][rover.x] = "[       ]"
+			grid[rover.y][rover.x] = emptyGridSpace
 			rover.x += roverX
 			rover.y += roverY
 
