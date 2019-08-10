@@ -1,7 +1,7 @@
 // Global Variables
 // ===============================================================
 let gridWidth = 10
-let gridHeight = 10
+let gridHeight = 11
 let emptyGridSpace = "[       ]"
 
 // Optimized for playcode.io
@@ -69,7 +69,7 @@ function randomNum(axis) {
 
 let obstacles = {}
 let rovers = {
-	rover1 : {
+	rover0 : {
 		name: "Rover WALL-E",
 		direction: "N",
 		x: randomNum("x"),
@@ -82,8 +82,8 @@ let rovers = {
 }
 
 function generate(item, percentage) {
-	let i = 0
-	while (i <= (gridWidth * gridHeight) * (percentage / 100)) {
+	let i = 1
+	while (i <= (gridWidth * gridHeight) * (percentage / 100) + 1 ) {
 		let x = randomNum("x")
 		let y = randomNum("y")
 		if (grid[x][y] === emptyGridSpace) {
@@ -93,7 +93,7 @@ function generate(item, percentage) {
 					grid[x][y] = objectiveGridSpace
 				break;
 				case "rovers" : 
-					rovers[ "rover" + [i]] = {"name": "HAL900"[i], "direction": "N", "x": x, "y": y}
+					rovers[ "rover" + [i]] = {"name": "HAL900" + [i], "direction": "N", "x": x, "y": y, "travelLog": {"x": [], "y": []}}
 					grid[x][y] = roverGridSpace
 				break;
 			}
@@ -101,6 +101,7 @@ function generate(item, percentage) {
 		}
 	}
 }
+
 
 
 // Cardinal Directions
@@ -211,7 +212,7 @@ function moveRover(direction, rover, roverX=0, roverY=0) {
 }
 
 function moveForward(rover) {
-  console.log(rover.name + " was commanded to move forward.")
+  console.log(`${rover.name} was commanded to move forward.`);
 
 	if (rover.direction === "N") {
 		moveRover("up", rover, 0, -1)
@@ -223,7 +224,7 @@ function moveForward(rover) {
 		moveRover("right", rover, 1, 0)
 	}
 
-	// console.log("[DEBUG --- " + rover.name + "] positions: x ="+ rovers.rover1.x + ",  " + "y =" + rovers.rover1.y + ",  direction = " + rovers.rover1.direction )
+	// console.log("[DEBUG --- " + rover.name + "] positions: x ="+ rovers.rover0.x + ",  " + "y =" + rovers.rover0.y + ",  direction = " + rovers.rover0.direction )
 }
 
 function moveBackwards(rover) {
@@ -239,7 +240,7 @@ function moveBackwards(rover) {
 		moveRover("right", rover, -1, 0)
 	}
 
-	// console.log("[DEBUG --- " + rover.name + "] positions: x ="+ rovers.rover1.x + ",  " + "y =" + rovers.rover1.y + ",  direction = " + rovers.rover1.direction )
+	// console.log("[DEBUG --- " + rover.name + "] positions: x ="+ rovers.rover0.x + ",  " + "y =" + rovers.rover0.y + ",  direction = " + rovers.rover0.direction )
 
 }
 
@@ -283,28 +284,23 @@ function placeRover(rover) {
 
 function command(rover, orders) {
 
-	if (rover === "all") {
+	if (rover === "otherRovers") {
 		for (let i = 0; i < orders.length; i++) {
-			let order = orders[i];
-			switch (order) {
-				case "l":
-					turnLeft(rover)
-					break;
-				case "r":
-					turnRight(rover)
-					break;
+			let roverName = rovers.rover[i]
+			console.log(`${roverName}`)
+
+			switch (orders[i]) {
 				case "f":
-					moveForward(rover)
+					moveForward(roverName)
 					break;
 				case "b":
-					moveBackwards(rover)
+					moveBackwards(roverName)
 					break;
 			}
 		}
 	} else {
 		for (let i = 0; i < orders.length; i++) {
-			let order = orders[i];
-			switch (order) {
+			switch (orders[i]) {
 				case "l":
 					turnLeft(rover)
 					break;
@@ -337,9 +333,10 @@ function listTravellog(rover) {
 // Generate rovers and obstacles
 // ===============================================================
 // place our main rover
-placeRover(rovers.rover1)
+placeRover(rovers.rover0)
 generate("obstacle", 10)
 generate("rovers", 10)
+console.log(rovers)
 
 
 // Print the intial grid to show what the grid starts with
@@ -355,17 +352,18 @@ consoleSpace()
 console.log("- - -   Begin Movement Commands Below")
 consoleHr()
 
-command(rovers.rover1, "frrflb")
-//command(rovers.rover1, "fbrrrrllflf")
-//command(rovers.rover1, "rffbrffblfrfbf")
+//command(rovers.rover0, "frrflb")
+command("otherRovers", "fbfbfbfbfbfbf")
+//command(rovers.rover0, "fbrrrrllflf")
+//command(rovers.rover0, "rffbrffblfrfbf")
 
 
 // Print the main rover's travel log
 // ===============================================================
 consoleSpace(1)
-console.log(`- - -   ${rovers.rover1.name} Travel Log`)
+console.log(`- - -   ${rovers.rover0.name} Travel Log`)
 consoleHr()
-listTravellog(rovers.rover1);
+listTravellog(rovers.rover0);
 
 // playcode.io's console gets cut off at the bottom, padding makes it visible
 consoleSpace(1)
