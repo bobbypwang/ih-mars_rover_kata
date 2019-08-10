@@ -4,11 +4,20 @@ let gridWidth = 10
 let gridHeight = 11
 let emptyGridSpace = "[       ]"
 
+// Optimized for playcode.io
+let objectiveGridSpace = "[llllllll]"
+let roverGridSpace = "[ -R- ]"
+
+// Optimized for codepen.io
+// let objectiveGridSpace = "[|||||||]"
+// let roverGridSpace = "[  -R-  ]"
+
+
 
 // Console Layouts
 // ===============================================================
 
-// line across
+// Displays a horizontal line
 function consoleHr(x) {
 	const a = "_".repeat(gridWidth*7.9)
 	if ( x > 1 ) {
@@ -20,7 +29,7 @@ function consoleHr(x) {
 	}
 }
 
-// empty space
+// Displays an empty line
 function consoleSpace(x) {
 	const a = " ".repeat(120)
 	if ( x > 1 ) {
@@ -48,8 +57,6 @@ for (let i = 0; i < gridHeight; i++) {
 
 // Obstacle and Rover Generator
 // ===============================================================
-let obstacles = {}
-
 function randomNum(axis) {
 	switch (axis) {
 	case "x" :
@@ -57,6 +64,20 @@ function randomNum(axis) {
 	break;
 	case "y" :
 		return Math.floor(Math.random() * Math.floor(gridHeight));
+	}
+}
+
+let obstacles = {}
+let rovers = {
+	Walle : {
+		name: "Rover WALL-E",
+		direction: "N",
+		x: randomNum("x"),
+		y: randomNum("y"),
+		travelLog: {
+			x : [],
+			y : []
+		}
 	}
 }
 
@@ -69,46 +90,17 @@ function generate(item, percentage) {
 			switch (item) {
 				case "obstacle" :
 					obstacles[ "obs" + [i]] = {"x": x, "y": y}
-					grid[x][y] = "[llllllll]"
+					grid[x][y] = objectiveGridSpace
 				break;
 				case "rovers" : 
 					rovers[ "rover" + [i]] = {"x": x, "y": y}
-					grid[x][y] = "[ -R- ]"
+					grid[x][y] = roverGridSpace
 				break;
 			}
 			i++
 		}
 	}
 }
-
-// Rovers 
-// Create rovers here
-// ===============================================================
-
-let rovers = {
-	Walle : {
-		name: "Rover WALL-E",
-		direction: "N",
-		x: 4,
-		y: 4,
-		travelLog: {
-			x : [],
-			y : []
-		}
-	}
-}
-
-generate("obstacle", 10)
-generate("rovers", 10)
-// console.log(obstacles)
-// console.log(rovers)
-// consoleSpace(3)
-
-
-
-
-
-
 
 
 // Cardinal Directions
@@ -285,7 +277,6 @@ function placeRover(rover) {
 
 
 
-
 // Command Function
 // ===============================================================
 
@@ -316,44 +307,44 @@ function command(rover, orders) {
 // ===============================================================
 function listTravellog(rover) {
 	for (let i=0; i < rover.travelLog.x.length; i++) {
-		console.log(`${rover.travelLog.x[i]},${rover.travelLog.y[i]}`)
+		console.log(`${i+1} - x: ${rover.travelLog.x[i]}, y: ${rover.travelLog.y[i]}`)
 	}
 }
 
+
+
+// Generate rovers and obstacles
+// ===============================================================
+// place our main rover
+placeRover(rovers.Walle)
+generate("obstacle", 10)
+generate("rovers", 10)
+
+
 // Print the intial grid to show what the grid starts with
 // ===============================================================
-
-/*
 console.log("- - -   Starting Initial Grid")
 consoleHr()
 printGrid();
-*/
 
-// User commands below
+
+// User movemwnr commands below
 // ===============================================================
 console.log("- - -   Begin Movement Commands Below")
 consoleHr()
-
-
-// place our main rover
-placeRover(rovers.Walle)
-
-// generate obstacles
-
-// generate additional rovers
-
 
 command(rovers.Walle, "frrflb")
 //command(rovers.Walle, "fbrrrrllflf")
 //command(rovers.Walle, "rffbrffblfrfbf")
 
+
+// Print the main rover's travel log
+// ===============================================================
 consoleSpace(1)
 console.log(`- - -   ${rovers.Walle.name} Travel Log`)
 consoleHr()
 listTravellog(rovers.Walle);
-console.log(rovers.Walle.travelLog.x)
-console.log(rovers.Walle.travelLog.y)
 
 // playcode.io's console gets cut off at the bottom, padding makes it visible
-consoleSpace(5)
+consoleSpace(1)
 console.log(" ")
