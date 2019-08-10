@@ -72,6 +72,7 @@ let rovers = {
 	rover0 : {
 		name: "Rover WALL-E",
 		direction: "N",
+		gridAscii: "[  ^  ]",
 		x: randomNum("x"),
 		y: randomNum("y"),
 		travelLog: {
@@ -93,7 +94,7 @@ function generate(item, percentage) {
 					grid[x][y] = objectiveGridSpace
 				break;
 				case "rovers" : 
-					rovers[ "rover" + [i]] = {"name": "HAL900" + [i], "direction": "N", "x": x, "y": y, "travelLog": {"x": [], "y": []}}
+					rovers[ "rover" + [i]] = {"name": "HAL900" + [i],"gridAscii": roverGridSpace, "direction": "N", "x": x, "y": y, "travelLog": {"x": [], "y": []}}
 					grid[x][y] = roverGridSpace
 				break;
 			}
@@ -193,6 +194,7 @@ function moveRover(direction, rover, roverX=0, roverY=0) {
 			rover.y += roverY
 			switch (direction) {
 			case "up" :
+
 				grid[rover.y][rover.x] = "[   ^  ]"
 				break;
 			case "right" :
@@ -286,8 +288,7 @@ function command(rover, orders) {
 
 	if (rover === "otherRovers") {
 		for (let i = 0; i < orders.length; i++) {
-			let roverName = rovers.rover[i]
-			console.log(`${roverName}`)
+			let roverName = rovers["rover"+i]
 
 			switch (orders[i]) {
 				case "f":
