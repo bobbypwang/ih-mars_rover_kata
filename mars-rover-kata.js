@@ -19,11 +19,11 @@ let roverGridSpace = "[ -R- ]"
 
 // Displays a horizontal line
 function consoleHr(x) {
-	const a = "_".repeat(gridWidth*7.9)
-	if ( x > 1 ) {
-		for (i=0;i <= x;i++) {
+	const a = "_".repeat(gridWidth * 7.9)
+	if (x > 1) {
+		for (i = 0; i <= x; i++) {
 			console.log(a)
-		} 
+		}
 	} else {
 		console.log(a)
 	}
@@ -32,10 +32,10 @@ function consoleHr(x) {
 // Displays an empty line
 function consoleSpace(x) {
 	const a = " ".repeat(120)
-	if ( x > 1 ) {
-		for (i=0;i <= x;i++) {
+	if (x > 1) {
+		for (i = 0; i <= x; i++) {
 			console.log(a)
-		} 
+		}
 	} else {
 		console.log(a)
 	}
@@ -59,44 +59,57 @@ for (let i = 0; i < gridHeight; i++) {
 // ===============================================================
 function randomNum(axis) {
 	switch (axis) {
-	case "x" :
-		return Math.floor(Math.random() * Math.floor(gridWidth));
-	break;
-	case "y" :
-		return Math.floor(Math.random() * Math.floor(gridHeight));
+		case "x":
+			return Math.floor(Math.random() * Math.floor(gridWidth));
+			break;
+		case "y":
+			return Math.floor(Math.random() * Math.floor(gridHeight));
 	}
 }
 
 let obstacles = {}
 let rovers = {
-	rover0 : {
+	rover0: {
 		name: "Rover WALL-E",
 		direction: "N",
 		gridAscii: "[  ^  ]",
 		x: randomNum("x"),
 		y: randomNum("y"),
 		travelLog: {
-			x : [],
-			y : []
+			x: [],
+			y: []
 		}
 	}
 }
 
 function generate(item, percentage) {
 	let i = 1
-	while (i <= (gridWidth * gridHeight) * (percentage / 100) + 1 ) {
+	while (i <= (gridWidth * gridHeight) * (percentage / 100) + 1) {
 		let x = randomNum("x")
 		let y = randomNum("y")
 		if (grid[x][y] === emptyGridSpace) {
 			switch (item) {
-				case "obstacle" :
-					obstacles[ "obs" + [i]] = {"x": x, "y": y}
+				case "obstacle":
+					obstacles["obs" + [i]] = {
+						"x": x,
+						"y": y
+					}
 					grid[x][y] = objectiveGridSpace
-				break;
-				case "rovers" : 
-					rovers[ "rover" + [i]] = {"name": "HAL900" + [i],"gridAscii": roverGridSpace, "direction": "N", "x": x, "y": y, "travelLog": {"x": [], "y": []}}
+					break;
+				case "rovers":
+					rovers["rover" + [i]] = {
+						"name": "HAL900" + [i],
+						"gridAscii": roverGridSpace,
+						"direction": "N",
+						"x": x,
+						"y": y,
+						"travelLog": {
+							"x": [],
+							"y": []
+						}
+					}
 					grid[x][y] = roverGridSpace
-				break;
+					break;
 			}
 			i++
 		}
@@ -133,10 +146,10 @@ function faceEast(rover) {
 // Turning Commands
 // ===============================================================
 
-function turnLeft(rover){
-  console.log(rover.name + " was commanded to turn left.");
+function turnLeft(rover) {
+	console.log(rover.name + " was commanded to turn left.");
 
-		switch (rover.direction) {
+	switch (rover.direction) {
 		case "N":
 			faceWest(rover)
 			break;
@@ -153,10 +166,10 @@ function turnLeft(rover){
 	printGrid()
 }
 
-function turnRight(rover){
-  console.log(rover.name + " was commanded to turn right.");
+function turnRight(rover) {
+	console.log(rover.name + " was commanded to turn right.");
 
-		switch (rover.direction) {
+	switch (rover.direction) {
 		case "N":
 			faceEast(rover)
 			break;
@@ -178,43 +191,42 @@ function turnRight(rover){
 // Movenment Directions
 // ===============================================================
 
-function moveRover(direction, rover, roverX=0, roverY=0) {
+function moveRover(direction, rover, roverX = 0, roverY = 0) {
 
 	let xx = rover.x + roverX
 	let yy = rover.y + roverY
 
-		if (xx < 0 || xx >= gridWidth || yy < 0 || yy >= gridHeight) {
-			console.log (rover.name + " will fall off the grid. Movement command not processed.")
-			consoleHr()
-		} else if (grid[yy][xx] !== emptyGridSpace) {
-			console.log (`${rover.name}'s path not clear. Movement command not processed.`)
-		} else {
-			grid[rover.y][rover.x] = emptyGridSpace
-			rover.x += roverX
-			rover.y += roverY
-			switch (direction) {
-			case "up" :
-
+	if (xx < 0 || xx >= gridWidth || yy < 0 || yy >= gridHeight) {
+		console.log(rover.name + " will fall off the grid. Movement command not processed.")
+		consoleHr()
+	} else if (grid[yy][xx] !== emptyGridSpace) {
+		console.log(`${rover.name}'s path not clear. Movement command not processed.`)
+	} else {
+		grid[rover.y][rover.x] = emptyGridSpace
+		rover.x += roverX
+		rover.y += roverY
+		switch (direction) {
+			case "up":
 				grid[rover.y][rover.x] = "[   ^  ]"
 				break;
-			case "right" :
+			case "right":
 				grid[rover.y][rover.x] = "[   >  ]"
 				break;
-			case "down" :
+			case "down":
 				grid[rover.y][rover.x] = "[   v  ]"
 				break;
-			case "left" :
+			case "left":
 				grid[rover.y][rover.x] = "[   <  ]"
 				break;
-			}
-			rover.travelLog.x.push(rover.x)
-			rover.travelLog.y.push(rover.y)
-			printGrid()
 		}
+		rover.travelLog.x.push(rover.x)
+		rover.travelLog.y.push(rover.y)
+		printGrid()
+	}
 }
 
 function moveForward(rover) {
-  console.log(`${rover.name} was commanded to move forward.`);
+	console.log(`${rover.name} was commanded to move forward.`);
 
 	if (rover.direction === "N") {
 		moveRover("up", rover, 0, -1)
@@ -230,7 +242,7 @@ function moveForward(rover) {
 }
 
 function moveBackwards(rover) {
-  console.log(rover.name + " was commanded to move backward.")
+	console.log(rover.name + " was commanded to move backward.")
 
 	if (rover.direction === "N") {
 		moveRover("up", rover, 0, 1)
@@ -264,41 +276,48 @@ function printGrid() {
 
 function placeRover(rover) {
 	switch (rover.direction) {
-		case "N" :
+		case "N":
 			faceNorth(rover)
 			break;
-		case "W" :
+		case "W":
 			faceWest(rover)
 			break;
-		case "S" :
+		case "S":
 			faceSouth(rover)
 			break;
-		case "E" :
+		case "E":
 			faceEast(rover)
 			break;
 	}
 }
 
 
+validOrders = ['f', 'b', 'l', 'r']
 
 // Command Function
 // ===============================================================
+function generateCommandsList(playerCommands) {
+	return playerCommands.split('').map(() => validOrders[Math.floor((Math.random() * 100)) % validOrders.length])
+}
+
 
 function command(rover, orders) {
-
+	orders = orders.trim().split('').filter((order) => validOrders.includes(orders))
+	
 	if (rover === "otherRovers") {
-		for (let i = 0; i < orders.length; i++) {
-			let roverName = rovers["rover"+i]
+		orders.map((order) => {
+			rovers.map((rover) => {
+				switch (order) {
+					case "f":
+						moveForward(rover)
+						break;
+					case "b":
+						moveBackwards(rover)
+						break;
+				}
+			})
+		})
 
-			switch (orders[i]) {
-				case "f":
-					moveForward(roverName)
-					break;
-				case "b":
-					moveBackwards(roverName)
-					break;
-			}
-		}
 	} else {
 		for (let i = 0; i < orders.length; i++) {
 			switch (orders[i]) {
@@ -324,7 +343,7 @@ function command(rover, orders) {
 // Print the rover travel log
 // ===============================================================
 function listTravellog(rover) {
-	for (let i=0; i < rover.travelLog.x.length; i++) {
+	for (let i = 0; i < rover.travelLog.x.length; i++) {
 		console.log(`${i+1} - x: ${rover.travelLog.x[i]}, y: ${rover.travelLog.y[i]}`)
 	}
 }

@@ -1,0 +1,20 @@
+{
+  "name": "ih-mars_rover_kata",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mars-rover-kata.js",
+  "scripts": {
+    "test": "",
+    "play": "nodemon mars-rover-kata.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bobbypwang/ih-mars_rover_kata.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bobbypwang/ih-mars_rover_kata/issues"
+  },
+  "homepage": "https://github.com/bobbypwang/ih-mars_rover_kata#readme"
+}
