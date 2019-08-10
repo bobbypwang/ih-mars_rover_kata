@@ -69,7 +69,7 @@ function randomNum(axis) {
 
 let obstacles = {}
 let rovers = {
-	Walle : {
+	rover1 : {
 		name: "Rover WALL-E",
 		direction: "N",
 		x: randomNum("x"),
@@ -93,7 +93,7 @@ function generate(item, percentage) {
 					grid[x][y] = objectiveGridSpace
 				break;
 				case "rovers" : 
-					rovers[ "rover" + [i]] = {"x": x, "y": y}
+					rovers[ "rover" + [i]] = {"name": "HAL900"[i], "direction": "N", "x": x, "y": y}
 					grid[x][y] = roverGridSpace
 				break;
 			}
@@ -223,7 +223,7 @@ function moveForward(rover) {
 		moveRover("right", rover, 1, 0)
 	}
 
-	// console.log("[DEBUG --- " + rover.name + "] positions: x ="+ rovers.Walle.x + ",  " + "y =" + rovers.Walle.y + ",  direction = " + rovers.Walle.direction )
+	// console.log("[DEBUG --- " + rover.name + "] positions: x ="+ rovers.rover1.x + ",  " + "y =" + rovers.rover1.y + ",  direction = " + rovers.rover1.direction )
 }
 
 function moveBackwards(rover) {
@@ -239,7 +239,7 @@ function moveBackwards(rover) {
 		moveRover("right", rover, -1, 0)
 	}
 
-	// console.log("[DEBUG --- " + rover.name + "] positions: x ="+ rovers.Walle.x + ",  " + "y =" + rovers.Walle.y + ",  direction = " + rovers.Walle.direction )
+	// console.log("[DEBUG --- " + rover.name + "] positions: x ="+ rovers.rover1.x + ",  " + "y =" + rovers.rover1.y + ",  direction = " + rovers.rover1.direction )
 
 }
 
@@ -283,6 +283,7 @@ function placeRover(rover) {
 
 function command(rover, orders) {
 
+	if (rover === "all") {
 		for (let i = 0; i < orders.length; i++) {
 			let order = orders[i];
 			switch (order) {
@@ -300,6 +301,25 @@ function command(rover, orders) {
 					break;
 			}
 		}
+	} else {
+		for (let i = 0; i < orders.length; i++) {
+			let order = orders[i];
+			switch (order) {
+				case "l":
+					turnLeft(rover)
+					break;
+				case "r":
+					turnRight(rover)
+					break;
+				case "f":
+					moveForward(rover)
+					break;
+				case "b":
+					moveBackwards(rover)
+					break;
+			}
+		}
+	}
 }
 
 
@@ -317,7 +337,7 @@ function listTravellog(rover) {
 // Generate rovers and obstacles
 // ===============================================================
 // place our main rover
-placeRover(rovers.Walle)
+placeRover(rovers.rover1)
 generate("obstacle", 10)
 generate("rovers", 10)
 
@@ -335,17 +355,17 @@ consoleSpace()
 console.log("- - -   Begin Movement Commands Below")
 consoleHr()
 
-command(rovers.Walle, "frrflb")
-//command(rovers.Walle, "fbrrrrllflf")
-//command(rovers.Walle, "rffbrffblfrfbf")
+command(rovers.rover1, "frrflb")
+//command(rovers.rover1, "fbrrrrllflf")
+//command(rovers.rover1, "rffbrffblfrfbf")
 
 
 // Print the main rover's travel log
 // ===============================================================
 consoleSpace(1)
-console.log(`- - -   ${rovers.Walle.name} Travel Log`)
+console.log(`- - -   ${rovers.rover1.name} Travel Log`)
 consoleHr()
-listTravellog(rovers.Walle);
+listTravellog(rovers.rover1);
 
 // playcode.io's console gets cut off at the bottom, padding makes it visible
 consoleSpace(1)
