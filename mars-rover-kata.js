@@ -1,16 +1,23 @@
 // Global Variables
 // ===============================================================
-let gridWidth = 10
-let gridHeight = 11
-let emptyGridSpace = "[       ]"
+let gridWidth = 5
+let gridHeight = 10
+let emptyGridSpace = "[     ]"
+let objectiveGridSpace = "[|||||]"
+let roverGridSpace = "[  R  ]"
+let gridWidthMultiplier = 9.7
 
 // Optimized for playcode.io
-let objectiveGridSpace = "[llllllll]"
-let roverGridSpace = "[ -R- ]"
+// let emptyGridSpace = "[       ]"
+// let objectiveGridSpace = "[llllllll]"
+// let roverGridSpace = "[ -R- ]"
+// let gridWidthMultiplier = 7.9
 
 // Optimized for codepen.io
+// let emptyGridSpace = "[       ]"
 // let objectiveGridSpace = "[|||||||]"
 // let roverGridSpace = "[  -R-  ]"
+// let gridWidthMultiplier = 7.9
 
 
 
@@ -19,7 +26,7 @@ let roverGridSpace = "[ -R- ]"
 
 // Displays a horizontal line
 function consoleHr(x) {
-	const a = "_".repeat(gridWidth * 7.9)
+	const a = "_".repeat(gridWidth * gridWidthMultiplier)
 	if (x > 1) {
 		for (i = 0; i <= x; i++) {
 			console.log(a)
@@ -45,7 +52,7 @@ function consoleSpace(x) {
 // Grid Creation
 // Create the grid based on the grid size specified in gridSize
 // ===============================================================
-let grid = [];
+let grid = []
 
 for (let i = 0; i < gridHeight; i++) {
 	grid[i] = []
@@ -60,10 +67,9 @@ for (let i = 0; i < gridHeight; i++) {
 function randomNum(axis) {
 	switch (axis) {
 		case "x":
-			return Math.floor(Math.random() * Math.floor(gridWidth));
-			break;
+			return Math.floor(Math.random() * gridWidth)
 		case "y":
-			return Math.floor(Math.random() * Math.floor(gridHeight));
+			return Math.floor(Math.random() * gridHeight)
 	}
 }
 
@@ -81,6 +87,7 @@ let rovers = {
 		}
 	}
 }
+
 
 function generate(item, percentage) {
 	let i = 1
@@ -292,10 +299,10 @@ function placeRover(rover) {
 }
 
 
-validOrders = ['f', 'b', 'l', 'r']
 
 // Command Function
 // ===============================================================
+let validOrders = ['f', 'b', 'l', 'r']
 function generateCommandsList(playerCommands) {
 	return playerCommands.split('').map(() => validOrders[Math.floor((Math.random() * 100)) % validOrders.length])
 }
@@ -355,15 +362,15 @@ function listTravellog(rover) {
 // place our main rover
 placeRover(rovers.rover0)
 generate("obstacle", 10)
-generate("rovers", 10)
-console.log(rovers)
+generate("rovers", 10) 
 
 
 // Print the intial grid to show what the grid starts with
 // ===============================================================
+consoleSpace()
 console.log("- - -   Starting Initial Grid")
 consoleHr()
-printGrid();
+printGrid()
 
 
 // User movemwnr commands below
