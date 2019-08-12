@@ -372,11 +372,8 @@ function main() {
 	console.log("-  Begin Movement Commands Below")
 	consoleHr()
 
-	//command(rovers.rover0, "frrflb")
-	// generateCommandsList("fbfblrfb")
-	//command("fbfbfbfbfbfbf")
+	// add commands below.
 	commands("frflfrb")
-	//command(rovers.rover0, "rffbrffblfrfbf")
 
 
 	// Print the main rover's travel log
@@ -385,10 +382,6 @@ function main() {
 	console.log(`-  ${rovers.rover0.name} Travel Log`)
 	consoleHr()
 	listTravellog(rovers.rover0);
-
-	// playcode.io's console gets cut off at the bottom, padding makes it visible
-	consoleSpace(1)
-	console.log(" ")
 }
 
 main()

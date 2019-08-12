@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/bobbypwang/ih-mars_rover_kata/issues"
   },
-  "homepage": "https://github.com/bobbypwang/ih-mars_rover_kata#readme"
+  "homepage": "https://github.com/bobbypwang/ih-mars_rover_kata#readme",
+  "dependencies": {
+    "npm": "^6.10.3"
+  }
 }
