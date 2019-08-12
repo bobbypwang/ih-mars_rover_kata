@@ -4,36 +4,17 @@ let gridWidth = 8
 let gridHeight = 8
 let emptyGridSpace = "[   ]"
 let objectiveGridSpace = "[|||]"
-let gridWidthMultiplier = 7.7
 
 
 
 // Console Layouts
+// Create console.log lines, empty spaces or any repition
+// Width is automatically calculated
 // ===============================================================
-
-// Displays a horizontal line
-function consoleHr(x) {
-	const a = "_".repeat(gridWidth * gridWidthMultiplier)
-	if (x > 1) {
-		for (i = 0; i <= x; i++) {
-			console.log(a)
-		}
-	} else {
-		console.log(a)
-	}
+function gridLayout(type) {
+	console.log(type.repeat(gridWidth * 7.7))
 }
 
-// Displays an empty line
-function consoleSpace(x) {
-	const a = " ".repeat(gridWidth * gridWidthMultiplier)
-	if (x > 1) {
-		for (i = 0; i <= x; i++) {
-			console.log(a)
-		}
-	} else {
-		console.log(a)
-	}
-}
 
 
 // Grid Creation
@@ -41,12 +22,13 @@ function consoleSpace(x) {
 // ===============================================================
 let grid = []
 
-for (let i = 0; i < gridWidth; i++) {
-	grid[i] = []
-	for (let j = 0; j < gridHeight ; j++) {
-		grid[i][j] = emptyGridSpace
+for (let x = 0; x < gridWidth; x++) {
+	grid[x] = []
+	for (let y = 0; y < gridHeight; y++) {
+		grid[x][y] = emptyGridSpace
 	}
 }
+
 
 
 // Obstacle and Rover Generator
@@ -91,7 +73,7 @@ function generate(item, percentage) {
 					grid[x][y] = objectiveGridSpace
 					break;
 				case "rovers":
-					rovers["rover" + [i+1]] = {
+					rovers["rover" + [i + 1]] = {
 						"name": "HAL900" + [i],
 						"nameInitial": "H" + [i],
 						"direction": "N",
@@ -143,7 +125,7 @@ function faceEast(rover) {
 
 function turnLeft(rover) {
 	console.log(rover.name + " was commanded to turn left.");
-	consoleSpace()
+	gridLayout(" ")
 
 	switch (rover.direction) {
 		case "N":
@@ -164,7 +146,7 @@ function turnLeft(rover) {
 
 function turnRight(rover) {
 	console.log(rover.name + " was commanded to turn right.");
-	consoleSpace()
+	gridLayout(" ")
 
 	switch (rover.direction) {
 		case "N":
@@ -195,10 +177,10 @@ function moveRover(direction, rover, roverX = 0, roverY = 0) {
 
 	if (xx < 0 || xx >= gridWidth || yy < 0 || yy >= gridHeight) {
 		console.log(rover.name + " will fall off the grid. Movement command not processed.")
-		consoleHr()
+		gridLayout("_")
 	} else if (grid[yy][xx] !== emptyGridSpace) {
 		console.log(`${rover.name}'s path not clear. Movement command not processed.`)
-		consoleHr()
+		gridLayout("_")
 	} else {
 		grid[rover.y][rover.x] = emptyGridSpace
 		rover.x += roverX
@@ -265,7 +247,7 @@ function printGrid() {
 	for (let i = 0; i < grid.length; i++) {
 		console.log(grid[i].join("   "))
 	}
-	consoleHr()
+	gridLayout("_")
 }
 
 
@@ -359,18 +341,18 @@ function main() {
 
 	// Print the intial grid to show what the grid starts with
 	// ===============================================================
-	consoleSpace()
+	gridLayout(" ")
 	console.log("-  Starting Initial Grid")
 	console.log(`-  ${rovers.rover0.name} Rover, ${Object.keys(rovers).length - 1} HAL Rovers, ${Object.keys(obstacles).length} Obstacles Generated`)
-	consoleHr()
+	gridLayout("_")
 	printGrid()
 
 
 	// User movemwnr commands below
 	// ===============================================================
-	consoleSpace()
+	gridLayout(" ")
 	console.log("-  Begin Movement Commands Below")
-	consoleHr()
+	gridLayout("_")
 
 	// add commands below.
 	commands("frflfrb")
@@ -378,9 +360,9 @@ function main() {
 
 	// Print the main rover's travel log
 	// ===============================================================
-	consoleSpace(1)
+	gridLayout(" ")
 	console.log(`-  ${rovers.rover0.name} Travel Log`)
-	consoleHr()
+	gridLayout("_")
 	listTravellog(rovers.rover0);
 }
 
