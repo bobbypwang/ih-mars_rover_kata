@@ -184,8 +184,8 @@ function moveRover(rover, roverX, roverY) {
 	}
 }
 
-moveLookup = {
-	'n': [0,-1],
+MOVING = {
+	'n': [0, -1],
 	'w': [-1, 0],
 	's': [0, 1],
 	'e': [1, 0]
@@ -193,12 +193,12 @@ moveLookup = {
 
 function moveForward(rover) {
 	console.log(`${rover.name} was commanded to move forward.`);
-	moveRover(rover, moveLookup[rover.direction][0], moveLookup[rover.direction][1])
+	moveRover(rover, MOVING[rover.direction][0], MOVING[rover.direction][1])
 }
 
 function moveBackwards(rover) {
 	console.log(rover.name + " was commanded to move backward.")
-	moveRover(rover, moveLookup[rover.direction][0]*-1, moveLookup[rover.direction][1]*-1)
+	moveRover(rover, MOVING[rover.direction][0] * -1, MOVING[rover.direction][1] * -1)
 }
 
 
@@ -250,15 +250,14 @@ function generateCommandsList(playerCommands) {
 function commands(orders) {
 	ROVERS.rover0.commands = orders.split("")
 
-	// TODO: Use Array.prototype functions instead of for loops.
-	for (let i = 1; i < Object.keys(ROVERS).length; i++) {
-		ROVERS["rover" + [i]].commands = generateCommandsList(orders)
-	}
 
-	// TODO: Use Array.prototype functions instead of for loops.
-	for (let i = 0; i < orders.length; i++) {
-		for (let i = 0; i < Object.keys(ROVERS).length; i++) {
-			switch (ROVERS["rover" + [i]].commands[i]) {
+	Object.keys(ROVERS).slice(1, ROVERS.length).map((rover, i) => {
+		ROVERS["rover" + [i + 1]].commands = generateCommandsList(orders)
+	})
+
+	orders.split("").map((order, i) => {
+		Object.keys(ROVERS).map((rover, j) => {
+			switch (ROVERS["rover" + [j]].commands[i]) {
 				case "l":
 					turnLeft(ROVERS["rover" + [i]])
 					break;
@@ -273,8 +272,8 @@ function commands(orders) {
 					break;
 			}
 			printGrid()
-		}
-	}
+		})
+	})
 
 
 }
