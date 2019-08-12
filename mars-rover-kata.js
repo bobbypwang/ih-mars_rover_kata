@@ -9,7 +9,6 @@ let objectiveGridSpace = "[|||]"
 
 // Console Layouts
 // Create console.log lines, empty spaces or any repition
-// Width is automatically calculated
 // ===============================================================
 function gridLayout(type) {
 	console.log(type.repeat(gridWidth * 7.7))
@@ -18,7 +17,6 @@ function gridLayout(type) {
 
 
 // Grid Creation
-// Create the grid based on the grid size specified in gridSize
 // ===============================================================
 let grid = []
 
@@ -27,6 +25,24 @@ for (let x = 0; x < gridWidth; x++) {
 	for (let y = 0; y < gridHeight; y++) {
 		grid[x][y] = emptyGridSpace
 	}
+}
+
+
+
+// Compass
+// ===============================================================
+
+let compass = {
+	"n": "^",
+	"w": ">",
+	"s": "v",
+	"e": "<",
+	'direction': 'whatever'
+}
+
+function direction(rover, direction) {
+	rover.direction = direction;
+	grid[rover.y][rover.x] = "[" + rover.nameInitial + compass[direction] + "]"
 }
 
 
@@ -46,7 +62,7 @@ let rovers = {
 	rover0: {
 		name: "WALL-E",
 		nameInitial: "WE",
-		direction: "N",
+		direction: "n",
 		x: randomNumber(gridWidth),
 		y: randomNumber(gridHeight),
 		travelLog: {
@@ -76,7 +92,7 @@ function generate(item, percentage) {
 					rovers["rover" + [i + 1]] = {
 						"name": "HAL900" + [i],
 						"nameInitial": "H" + [i],
-						"direction": "N",
+						"direction": "n",
 						"x": x,
 						"y": y,
 						"travelLog": {
@@ -85,39 +101,13 @@ function generate(item, percentage) {
 						},
 						"commands": []
 					}
-					faceNorth(rovers["rover" + [i]])
+					direction(rovers["rover" + [i]], "n")
 					break;
 			}
 			i++
 		}
 	}
 }
-
-
-
-// Cardinal Directions
-// ===============================================================
-
-function faceNorth(rover) {
-	rover.direction = "N"
-	grid[rover.y][rover.x] = "[" + rover.nameInitial + "^]"
-}
-
-function faceWest(rover) {
-	rover.direction = "W"
-	grid[rover.y][rover.x] = "[" + rover.nameInitial + "<]"
-}
-
-function faceSouth(rover) {
-	rover.direction = "S"
-	grid[rover.y][rover.x] = "[" + rover.nameInitial + "v]"
-}
-
-function faceEast(rover) {
-	rover.direction = "E"
-	grid[rover.y][rover.x] = "[" + rover.nameInitial + ">]"
-}
-
 
 
 // Turning Commands
@@ -129,16 +119,16 @@ function turnLeft(rover) {
 
 	switch (rover.direction) {
 		case "N":
-			faceWest(rover)
+			direction(rover, "w")
 			break;
 		case "W":
-			faceSouth(rover)
+			direction(rover, "s")
 			break;
 		case "S":
-			faceEast(rover)
+			direction(rover, "e")
 			break;
 		case "E":
-			faceNorth(rover)
+			direction(rover, "n")
 			break;
 	}
 	printGrid()
@@ -150,16 +140,16 @@ function turnRight(rover) {
 
 	switch (rover.direction) {
 		case "N":
-			faceEast(rover)
+			direction(rover, "e")
 			break;
 		case "W":
-			faceNorth(rover)
+			direction(rover, "n")
 			break;
 		case "S":
-			faceWest(rover)
+			direction(rover, "w")
 			break;
 		case "E":
-			faceSouth(rover)
+			direction(rover, "s")
 			break;
 	}
 	printGrid()
@@ -217,8 +207,6 @@ function moveForward(rover) {
 	} else if (rover.direction === "E") {
 		moveRover("right", rover, 1, 0)
 	}
-
-	// console.log("[DEBUG --- " + rover.name + "] positions: x ="+ rovers.rover0.x + ",  " + "y =" + rovers.rover0.y + ",  direction = " + rovers.rover0.direction )
 }
 
 function moveBackwards(rover) {
@@ -233,8 +221,6 @@ function moveBackwards(rover) {
 	} else if (rover.direction === "E") {
 		moveRover("right", rover, -1, 0)
 	}
-
-	// console.log("[DEBUG --- " + rover.name + "] positions: x ="+ rovers.rover0.x + ",  " + "y =" + rovers.rover0.y + ",  direction = " + rovers.rover0.direction )
 
 }
 
@@ -257,16 +243,16 @@ function printGrid() {
 function placeRover(rover) {
 	switch (rover.direction) {
 		case "N":
-			faceNorth(rover)
+			direction(rover, "n")
 			break;
 		case "W":
-			faceWest(rover)
+			direction(rover, "w")
 			break;
 		case "S":
-			faceSouth(rover)
+			direction(rover, "s")
 			break;
 		case "E":
-			faceEast(rover)
+			direction(rover, "e")
 			break;
 	}
 }
