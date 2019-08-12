@@ -167,7 +167,7 @@ function moveRover(rover, roverX, roverY) {
 
 	let xx = rover.x + roverX
 	let yy = rover.y + roverY
-	
+
 	if (xx < 0 || xx >= gridWidth || yy < 0 || yy >= gridHeight) {
 		console.log(rover.name + " will fall off the grid. Movement command not processed.")
 		gridLayout("_")
@@ -175,6 +175,7 @@ function moveRover(rover, roverX, roverY) {
 		console.log(`${rover.name}'s path not clear. Movement command not processed.`)
 		gridLayout("_")
 	} else {
+		grid[rover.y][rover.x] = emptyGridSpace
 		rover.x += roverX
 		rover.y += roverY
 		grid[rover.y][rover.x] = `[${rover.nameInitial}${compass[rover.direction]}]`
@@ -183,33 +184,21 @@ function moveRover(rover, roverX, roverY) {
 	}
 }
 
+moveLookup = {
+	'n': [0,-1],
+	'w': [-1, 0],
+	's': [0, 1],
+	'e': [1, 0]
+}
+
 function moveForward(rover) {
 	console.log(`${rover.name} was commanded to move forward.`);
-
-	if (rover.direction === N) {
-		moveRover(rover, 0, -1)
-	} else if (rover.direction === W) {
-		moveRover(rover, -1, 0)
-	} else if (rover.direction === S) {
-		moveRover(rover, 0, 1)
-	} else if (rover.direction === E) {
-		moveRover(rover, 1, 0)
-	}
+	moveRover(rover, moveLookup[rover.direction][0], moveLookup[rover.direction][1])
 }
 
 function moveBackwards(rover) {
 	console.log(rover.name + " was commanded to move backward.")
-
-	if (rover.direction === N) {
-		moveRover(rover, 0, 1)
-	} else if (rover.direction === W) {
-		moveRover(rover, 1, 0)
-	} else if (rover.direction === S) {
-		moveRover(rover, 0, -1)
-	} else if (rover.direction === E) {
-		moveRover(rover, -1, 0)
-	}
-
+	moveRover(rover, moveLookup[rover.direction][0]*-1, moveLookup[rover.direction][1]*-1)
 }
 
 
