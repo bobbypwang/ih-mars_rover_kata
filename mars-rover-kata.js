@@ -1,10 +1,10 @@
 // Global Variables
 // ===============================================================
-let gridWidth = 5
-let gridHeight = 10
-let emptyGridSpace = "[     ]"
-let objectiveGridSpace = "[|||||]"
-let gridWidthMultiplier = 9.5
+let gridWidth = 8
+let gridHeight = 8
+let emptyGridSpace = "[   ]"
+let objectiveGridSpace = "[|||]"
+let gridWidthMultiplier = 7.7
 
 
 
@@ -25,7 +25,7 @@ function consoleHr(x) {
 
 // Displays an empty line
 function consoleSpace(x) {
-	const a = " ".repeat(120)
+	const a = " ".repeat(gridWidth * gridWidthMultiplier)
 	if (x > 1) {
 		for (i = 0; i <= x; i++) {
 			console.log(a)
@@ -41,9 +41,9 @@ function consoleSpace(x) {
 // ===============================================================
 let grid = []
 
-for (let i = 0; i < gridHeight; i++) {
+for (let i = 0; i < gridWidth; i++) {
 	grid[i] = []
-	for (let j = 0; j < gridWidth; j++) {
+	for (let j = 0; j < gridHeight ; j++) {
 		grid[i][j] = emptyGridSpace
 	}
 }
@@ -63,7 +63,7 @@ let obstacles = {}
 let rovers = {
 	rover0: {
 		name: "WALL-E",
-		nameInitial: "W",
+		nameInitial: "WE",
 		direction: "N",
 		x: randomNumber(gridWidth),
 		y: randomNumber(gridHeight),
@@ -80,7 +80,6 @@ function generate(item, percentage) {
 	let i = 0
 	while (i <= (gridWidth * gridHeight) * (percentage / 100) + 1) {
 		let [x, y] = genSpawnPoint()
-		console.log(`Generating item at position ${x}, ${y}`)
 
 		if (grid[x][y] === emptyGridSpace) {
 			switch (item) {
@@ -92,9 +91,9 @@ function generate(item, percentage) {
 					grid[x][y] = objectiveGridSpace
 					break;
 				case "rovers":
-					rovers["rover" + [i]] = {
+					rovers["rover" + [i+1]] = {
 						"name": "HAL900" + [i],
-						"nameInitial": "H",
+						"nameInitial": "H" + [i],
 						"direction": "N",
 						"x": x,
 						"y": y,
@@ -119,22 +118,22 @@ function generate(item, percentage) {
 
 function faceNorth(rover) {
 	rover.direction = "N"
-	grid[rover.y][rover.x] = "[ " + rover.nameInitial + " ^ ]"
+	grid[rover.y][rover.x] = "[" + rover.nameInitial + "^]"
 }
 
 function faceWest(rover) {
 	rover.direction = "W"
-	grid[rover.y][rover.x] = "[ " + rover.nameInitial + " < ]"
+	grid[rover.y][rover.x] = "[" + rover.nameInitial + "<]"
 }
 
 function faceSouth(rover) {
 	rover.direction = "S"
-	grid[rover.y][rover.x] = "[ " + rover.nameInitial + " v ]"
+	grid[rover.y][rover.x] = "[" + rover.nameInitial + "v]"
 }
 
 function faceEast(rover) {
 	rover.direction = "E"
-	grid[rover.y][rover.x] = "[ " + rover.nameInitial + " > ]"
+	grid[rover.y][rover.x] = "[" + rover.nameInitial + ">]"
 }
 
 
@@ -144,6 +143,7 @@ function faceEast(rover) {
 
 function turnLeft(rover) {
 	console.log(rover.name + " was commanded to turn left.");
+	consoleSpace()
 
 	switch (rover.direction) {
 		case "N":
@@ -164,6 +164,7 @@ function turnLeft(rover) {
 
 function turnRight(rover) {
 	console.log(rover.name + " was commanded to turn right.");
+	consoleSpace()
 
 	switch (rover.direction) {
 		case "N":
@@ -194,27 +195,26 @@ function moveRover(direction, rover, roverX = 0, roverY = 0) {
 
 	if (xx < 0 || xx >= gridWidth || yy < 0 || yy >= gridHeight) {
 		console.log(rover.name + " will fall off the grid. Movement command not processed.")
-		console.log(`${xx}, ${yy}`)
 		consoleHr()
 	} else if (grid[yy][xx] !== emptyGridSpace) {
 		console.log(`${rover.name}'s path not clear. Movement command not processed.`)
-		console.log(`Current Position: ${xx}, ${yy}`)
+		consoleHr()
 	} else {
 		grid[rover.y][rover.x] = emptyGridSpace
 		rover.x += roverX
 		rover.y += roverY
 		switch (direction) {
 			case "up":
-				grid[rover.y][rover.x] = "[ " + rover.nameInitial + " ^ ]"
+				grid[rover.y][rover.x] = "[" + rover.nameInitial + "^]"
 				break;
 			case "right":
-				grid[rover.y][rover.x] = "[ " + rover.nameInitial + " > ]"
+				grid[rover.y][rover.x] = "[" + rover.nameInitial + ">]"
 				break;
 			case "down":
-				grid[rover.y][rover.x] = "[ " + rover.nameInitial + " v ]"
+				grid[rover.y][rover.x] = "[" + rover.nameInitial + "v]"
 				break;
 			case "left":
-				grid[rover.y][rover.x] = "[ " + rover.nameInitial + " < ]"
+				grid[rover.y][rover.x] = "[" + rover.nameInitial + "<]"
 				break;
 		}
 		rover.travelLog.x.push(rover.x)
@@ -353,8 +353,8 @@ function main() {
 	generate("obstacle", 10)
 	generate("rovers", 10)
 
-	console.log(rovers)
-	console.log(obstacles)
+	//console.log(rovers)
+	//console.log(obstacles)
 
 
 	// Print the intial grid to show what the grid starts with
